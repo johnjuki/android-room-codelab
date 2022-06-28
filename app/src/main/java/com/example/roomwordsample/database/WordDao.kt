@@ -1,6 +1,7 @@
-package com.example.roomwordsample
+package com.example.roomwordsample.database
 
 import androidx.room.*
+import com.example.roomwordsample.database.Word
 import kotlinx.coroutines.flow.Flow
 
 @Dao

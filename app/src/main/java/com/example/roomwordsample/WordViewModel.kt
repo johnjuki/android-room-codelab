@@ -1,17 +1,17 @@
 package com.example.roomwordsample
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.launch
+import com.example.roomwordsample.database.Word
+import com.example.roomwordsample.repo.WordRepository
 
-class WordViewModel(private val repository: WordRepository): ViewModel() {
+class WordViewModel(private val repository: WordRepository) : ViewModel() {
     val allWords: LiveData<List<Word>> = repository.allWords.asLiveData()
 
-    fun insert(word: Word) = viewModelScope.launch {
-        repository.insert(word)
-    }
+    fun insert(word: Word) = repository.insert(word)
+
 }
 
-class WordViewModelFactory(private val repository: WordRepository): ViewModelProvider.Factory {
+class WordViewModelFactory(private val repository: WordRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(WordViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
