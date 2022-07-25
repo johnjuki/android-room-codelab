@@ -2,11 +2,13 @@ package com.example.roomwordsample
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.roomwordsample.NewWordNotification.createNotificationChannel
@@ -20,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         WordViewModelFactory((application as WordsApplication).repository)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private val getWord =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -27,16 +30,16 @@ class MainActivity : AppCompatActivity() {
                 data?.getStringExtra(NewWordActivity.EXTRA_REPLY)?.let {
                     val word = Word(it)
                     wordViewModel.insert(word)
+
+                    notify(this, "New Word", it, 0)
                 }
-
-                notify(this, "Updated", "New word added", 0)
-
             } else {
                 Toast.makeText(applicationContext, R.string.empty_not_saved, Toast.LENGTH_LONG)
                     .show()
             }
         }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
